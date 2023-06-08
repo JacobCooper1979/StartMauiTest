@@ -112,18 +112,16 @@ namespace ProjectUnitTests
             [TestInitialize]
             public void Initialize()
             {
-                // Delete the test payslip file if it exists
-                if (File.Exists(TestPayslipFilePath))
-                {
-                    File.Delete(TestPayslipFilePath);
-                }
+                
             }
 
             [TestMethod]
             public void SavePayslipToCSV_PayslipSavedSuccessfully()
             {
                 // Arrange
-                var payslip = new Payslip(1, 7, 0, 0, 0, 0, False);
+                var payslip = new SavePayslipCsv.Payslip("123", "456", 1000, 800, 200, 100);
+
+
                 var csvImporter = new CsvImporter();
 
                 // Act
@@ -131,11 +129,6 @@ namespace ProjectUnitTests
 
                 // Assert
                 Assert.IsTrue(File.Exists(TestPayslipFilePath), "Payslip file should exist.");
-
-
-
-                // Clean up the test payslip file
-                File.Delete(TestPayslipFilePath);
             }
 
 
