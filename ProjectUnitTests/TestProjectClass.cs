@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Collections.Generic;
 using System.IO;
 using StartMauiTest;
+using static System.Net.WebRequestMethods;
 
 
 namespace ProjectUnitTests
@@ -73,21 +74,13 @@ namespace ProjectUnitTests
         {
             var payslip = new SavePayslipCsv.Payslip("123", "456", 1000, 800, 200, 100);
 
-
-
             // Create a unique filename for each test to avoid conflicts
             //var testFilename = Path.GetTempFileName();
-
-
 
             var savePayslipCsv = new SavePayslipCsv();
             savePayslipCsv.SavePayslipToCSV(payslip);
 
-
-
             var filePathOfPayslip = @"C:\Users\jacob\Documents\Tafe Cert 4\c#\Wednesday_Shaun_OOP\Assesments\Project_14June\StartMauiTest\StartMauiTest\Payslips.csv";
-
-
 
             var fountId = 0;
             decimal foundGross = 0;
@@ -105,8 +98,6 @@ namespace ProjectUnitTests
                     }
                 }
             }
-
-
 
             Assert.AreEqual(123, fountId);
             Assert.AreEqual(1000, foundGross);
@@ -132,7 +123,7 @@ namespace ProjectUnitTests
             public void SavePayslipToCSV_PayslipSavedSuccessfully()
             {
                 // Arrange
-                var payslip = new Payslip("1", "EMP001", 1000, 900, 100, 50);
+                var payslip = new Payslip(1, 7, 0, 0, 0, 0, False);
                 var csvImporter = new CsvImporter();
 
                 // Act
