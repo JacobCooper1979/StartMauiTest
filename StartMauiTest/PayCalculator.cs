@@ -8,18 +8,25 @@ namespace StartMauiTest
 {
     public class PayCalculator
     {
-        //YOUR PAY CALCULATOR METHODS HERE
+        // 15% superannuation rate
+        private const decimal SuperRate = 0.15m;
 
-        //GROSS
-        public decimal GetGross()
+        // Calculate the superannuation amount based on the gross payment
+        public static decimal CalculateSuperannuation(decimal grossPayment)
         {
-            return 1;
+            return grossPayment * SuperRate;
         }
 
-        //TAX
+        // Calculate the gross pay based on the hourly rate and hours worked
+        public static decimal CalculateGross(decimal hourlyRate, decimal hoursWorked)
+        {
+            return hourlyRate * hoursWorked;
+        }
 
-        //SUPER
-
-        //NET
+        // Calculate the net pay based on the gross pay and tax amount
+        public static decimal CalculateNet(decimal grossPayment, decimal taxAmount)
+        {
+            return grossPayment - taxAmount;
+        }
     }
 }

@@ -3,6 +3,7 @@ using StartMauiTest;
 using System.Globalization;
 using System.Collections.Generic;
 using System.IO;
+using StartMauiTest;
 
 
 namespace ProjectUnitTests
@@ -26,9 +27,9 @@ namespace ProjectUnitTests
             Assert.IsNotNull(list);
         }
 
-        
 
-        [TestMethod]
+
+        /*[TestMethod]
         public void SavePayslipToCSV_ValidPayslip_SavesToCsv()
         {
             var payslip = new SavePayslipCsv.Payslip("123", "456", 1000, 800, 200, 100);
@@ -39,7 +40,7 @@ namespace ProjectUnitTests
             try
             {
                 var savePayslipCsv = new SavePayslipCsv();
-                 savePayslipCsv.SavePayslipToCSV(payslip);
+                savePayslipCsv.SavePayslipToCSV(payslip);
                 Assert.IsTrue(File.Exists(testFilename), "CSV file should be created");
 
                 // Read the CSV file and verify its contents
@@ -64,27 +65,139 @@ namespace ProjectUnitTests
                 // Clean up the temporary file
                 File.Delete(testFilename);
             }
+        }*/
+
+
+        [TestMethod]
+        public void SavePayslipToCSV_ValidPayslip_SavesToCsv()
+        {
+            var payslip = new SavePayslipCsv.Payslip("123", "456", 1000, 800, 200, 100);
+
+
+
+            // Create a unique filename for each test to avoid conflicts
+            //var testFilename = Path.GetTempFileName();
+
+
+
+            var savePayslipCsv = new SavePayslipCsv();
+            savePayslipCsv.SavePayslipToCSV(payslip);
+
+
+
+            var filePathOfPayslip = @"C:\Users\jacob\Documents\Tafe Cert 4\c#\Wednesday_Shaun_OOP\Assesments\Project_14June\StartMauiTest\StartMauiTest\Payslips.csv";
+
+
+
+            var fountId = 0;
+            decimal foundGross = 0;
+            using (var reader = new StreamReader(filePathOfPayslip))
+            using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
+            {
+                while (csv.Read())
+                {
+                    int tempID = csv.GetField<int>(0);
+                    var tempGross = csv.GetField<decimal>(2);
+                    if (payslip.Id == tempID.ToString())
+                    {
+                        fountId = tempID;
+                        foundGross = tempGross;
+                    }
+                }
+            }
+
+
+
+            Assert.AreEqual(123, fountId);
+            Assert.AreEqual(1000, foundGross);
         }
 
 
-
-        //PAY CACLUATOR TEST METHODS
-
-        /// <summary>
-        /// GRODD
-        /// </summary>
-        /*[TestMethod]
-        public void GrossCalculation()
+        [TestClass]
+        public class CsvImporterTests
         {
-            //Arrange
-            PayCalculator grosscalc = new PayCalculator();
+            private const string TestPayslipFilePath = "TestPayslips.csv";
 
-            //Act
-            var actual = grosscalc.GetGross(); //work hrs and hours work
-            var control = 10000;
+            [TestInitialize]
+            public void Initialize()
+            {
+                // Delete the test payslip file if it exists
+                if (File.Exists(TestPayslipFilePath))
+                {
+                    File.Delete(TestPayslipFilePath);
+                }
+            }
 
-            //Assert
-            Assert.AreEqual(control, actual);
-        }*/
+            [TestMethod]
+            public void SavePayslipToCSV_PayslipSavedSuccessfully()
+            {
+                // Arrange
+                var payslip = new Payslip("1", "EMP001", 1000, 900, 100, 50);
+                var csvImporter = new CsvImporter();
+
+                // Act
+                csvImporter.SavePayslipToCSV(payslip);
+
+                // Assert
+                Assert.IsTrue(File.Exists(TestPayslipFilePath), "Payslip file should exist.");
+
+
+
+                // Clean up the test payslip file
+                File.Delete(TestPayslipFilePath);
+            }
+
+
+
+
+
+            [TestClass]
+            public class PayCalculatorTests
+            {
+                [TestMethod]
+                public void CalculateSuperannuation_ValidGrossPayment_ReturnsCorrectSuperannuationAmount()
+                {
+                    // Arrange
+                    decimal grossPayment = 1000m;
+                    decimal expectedSuperannuation = 150m; // 15% of 1000
+
+                    // Act
+                    decimal actualSuperannuation = PayCalculator.CalculateSuperannuation(grossPayment);
+
+                    // Assert
+                    Assert.AreEqual(expectedSuperannuation, actualSuperannuation, "Superannuation amount is incorrect.");
+                }
+
+                [TestMethod]
+                public void CalculateGross_ValidHourlyRateAndHoursWorked_ReturnsCorrectGrossPayment()
+                {
+                    // Arrange
+                    decimal hourlyRate = 20m;
+                    decimal hoursWorked = 40m;
+                    decimal expectedGrossPayment = 800m; // 20 * 40
+
+                    // Act
+                    decimal actualGrossPayment = PayCalculator.CalculateGross(hourlyRate, hoursWorked);
+
+                    // Assert
+                    Assert.AreEqual(expectedGrossPayment, actualGrossPayment, "Gross payment is incorrect.");
+                }
+
+                [TestMethod]
+                public void CalculateNet_ValidGrossPaymentAndTaxAmount_ReturnsCorrectNetPayment()
+                {
+                    // Arrange
+                    decimal grossPayment = 1000m;
+                    decimal taxAmount = 200m;
+                    decimal expectedNetPayment = 800m; // 1000 - 200
+
+                    // Act
+                    decimal actualNetPayment = PayCalculator.CalculateNet(grossPayment, taxAmount);
+
+                    // Assert
+                    Assert.AreEqual(expectedNetPayment, actualNetPayment, "Net payment is incorrect.");
+                }
+            }
+        }
     }
 }
