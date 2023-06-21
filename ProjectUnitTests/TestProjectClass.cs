@@ -3,7 +3,6 @@ using StartMauiTest;
 using System.Globalization;
 using System.Collections.Generic;
 using System.IO;
-using StartMauiTest;
 using static System.Net.WebRequestMethods;
 
 
@@ -30,52 +29,13 @@ namespace ProjectUnitTests
 
 
 
-        /*[TestMethod]
-        public void SavePayslipToCSV_ValidPayslip_SavesToCsv()
-        {
-            var payslip = new SavePayslipCsv.Payslip("123", "456", 1000, 800, 200, 100);
 
-            // Create a unique filename for each test to avoid conflicts
-            var testFilename = Path.GetTempFileName();
-
-            try
-            {
-                var savePayslipCsv = new SavePayslipCsv();
-                savePayslipCsv.SavePayslipToCSV(payslip);
-                Assert.IsTrue(File.Exists(testFilename), "CSV file should be created");
-
-                // Read the CSV file and verify its contents
-                using (var reader = new StreamReader(testFilename))
-                using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture))
-                {
-                    var records = csv.GetRecords<SavePayslipCsv.Payslip>().ToList();
-                    Assert.AreEqual(1, records.Count, "CSV file should contain one record");
-
-                    var savedPayslip = records[9];
-                    Assert.AreEqual(payslip.Id, savedPayslip.Id, "Payslip ID should match");
-                    Assert.AreEqual(payslip.EmployeeId, savedPayslip.EmployeeId, "Employee ID should match");
-                    Assert.AreEqual(payslip.GrossPayment, savedPayslip.GrossPayment, "Gross payment should match");
-                    Assert.AreEqual(payslip.NetPayment, savedPayslip.NetPayment, "Net payment should match");
-                    Assert.AreEqual(payslip.TaxAmount, savedPayslip.TaxAmount, "Tax amount should match");
-                    Assert.AreEqual(payslip.SuperAmount, savedPayslip.SuperAmount, "Super amount should match");
-                    Assert.AreEqual(payslip.Approved, savedPayslip.Approved, "Approved status should match");
-                }
-            }
-            finally
-            {
-                // Clean up the temporary file
-                File.Delete(testFilename);
-            }
-        }*/
 
 
         [TestMethod]
         public void SavePayslipToCSV_ValidPayslip_SavesToCsv()
         {
             var payslip = new SavePayslipCsv.Payslip("123", "456", 1000, 800, 200, 100);
-
-            // Create a unique filename for each test to avoid conflicts
-            //var testFilename = Path.GetTempFileName();
 
             var savePayslipCsv = new SavePayslipCsv();
             savePayslipCsv.SavePayslipToCSV(payslip);
@@ -115,43 +75,18 @@ namespace ProjectUnitTests
                 
             }
 
-            /*[TestMethod]
-            public void SavePayslipToCSV_PayslipSavedSuccessfully()
-            {
-                // Arrange
-                var payslip = new SavePayslipCsv.Payslip("123", "456", 1000, 800, 200, 100);
-
-
-                var csvImporter = new CsvImporter();
-
-                // Act
-                csvImporter.SavePayslipToCSV(payslip);
-
-                // Assert
-                Assert.IsNotNull(File.Exists(TestPayslipFilePath), "Payslip file should exist.");
-            }*/
-
-
             [TestMethod]
             public void SavePayslipToCSV_PayslipSavedSuccessfully()
             {
                 // Arrange
                 var payslip = new Payslip("123", "456", 1000, 800, 200, 100);
 
-
-
-
                 var csvImporter = new CsvImporter();
-
-
 
                 // Act
                 csvImporter.SavePayslipToCSV(payslip);
 
-
-
                 // Assert
-                //Assert.IsTrue(System.IO.File.Exists(file), "Payslip file should exist.");
                 Assert.IsNotNull(System.IO.File.Exists(TestPayslipFilePath), "Payslip file should exist.");
             }
 
@@ -172,7 +107,7 @@ namespace ProjectUnitTests
                     decimal actualSuperannuation = PayCalculator.CalculateSuperannuation(grossPayment);
 
                     // Assert
-                    Assert.AreEqual(expectedSuperannuation, actualSuperannuation, "Superannuation amount is incorrect.");
+                    Assert.AreEqual(expectedSuperannuation, actualSuperannuation, "Superannuation amount is incorrect");
                 }
 
                 [TestMethod]
@@ -187,7 +122,7 @@ namespace ProjectUnitTests
                     decimal actualGrossPayment = PayCalculator.CalculateGross(hourlyRate, hoursWorked);
 
                     // Assert
-                    Assert.AreEqual(expectedGrossPayment, actualGrossPayment, "Gross payment is incorrect.");
+                    Assert.AreEqual(expectedGrossPayment, actualGrossPayment, "Gross payment is incorrect");
                 }
 
                 [TestMethod]
